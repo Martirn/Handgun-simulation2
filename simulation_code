@@ -1,0 +1,47 @@
+% Constants
+g = 9.81; % Acceleration due to gravity (m/s^2)
+m = 0.9;  % Mass of the projectile (kg)
+v0 = 356; % Initial velocity (m/s)
+
+% Range of angles from -π to π
+theta = linspace(-pi, pi, 100);
+
+% Range distance and injury status
+range = zeros(1, numel(theta));
+injury = zeros(1, numel(theta));
+
+% Loop through angles
+for i = 2:numel(theta)
+    % Calculate horizontal and vertical components of velocity
+    vx = v0 * cos(theta(i));
+    vy = v0 * sin(theta(i));
+    
+    % Calculate time of flight
+    t_flight = (2 * vy) / g;
+    
+    % Calculate range
+    range(i) = vx * t_flight;
+    
+    % Determine if the shooter will be injured
+    if theta(i) >= pi/2
+        injury(i) = true; % Angle at 90 degrees
+    else
+        injury(i) = false; % Angle below 90 degrees
+    end
+end
+
+% Plot the range as a function of angle
+figure;
+plot(theta, range);
+xlabel('Launch Angle (radians)');
+ylabel('Range (m)');
+title('Projectile Range vs Launch Angle');
+grid on;
+
+% Check for injury
+if any(injury)
+    disp('The shooter will be injured at 90 degrees.');
+else
+    disp('The shooter will not be injured at 90 degrees.');
+end
+
